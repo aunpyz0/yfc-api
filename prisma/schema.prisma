@@ -9,3 +9,68 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model Staff {
+  id        Int      @id @default(autoincrement())
+  code      String
+  firstname String
+  lastname  String
+  email     String
+  password  String
+  role      Role
+}
+
+enum Role {
+  STAFF
+  ACCOUNTANT
+}
+
+model Supporter {
+  id        Int      @id @default(autoincrement())
+  code      String
+  firstname String
+  lastname  String
+}
+
+model Department {
+  id        Int      @id @default(autoincrement())
+  name      String
+}
+
+model Bank {
+  id                Int      @id @default(autoincrement())
+  name              String
+  transferFromBank  Give[]   @relation(name: "TransferFromBank")
+  transferToBank    Give[]   @relation(name: "TransferToBank")
+  chequeBank        Give[]   @relation(name: "ChequeBank")
+}
+
+model GiveType {
+  id        Int      @id @default(autoincrement())
+  name      String
+}
+
+model Give {
+  id                    Int         @id @default(autoincrement())
+  supporter             Supporter   @relation(fields: [supporterId], references: [id])
+  supporterId           Int
+  owner                 Staff       @relation(fields: [ownerId], references: [id])
+  ownerId               Int
+  amount                Float
+  transferDate          DateTime?
+  transferFromBank      Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
+  transferFromBankId    Int?
+  transferToBank        Bank?       @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
+  transferToBankId      Int?
+  chequeBank            Bank?       @relation(name: "ChequeBank", fields: [chequeBankId], references: [id])
+  chequeBankId          Int?
+  chequeBankBranch      String?
+  chequeNumber          String?
+  chequeDate            DateTime?
+  type                  GiveType    @relation(fields: [typeId], references: [id])
+  typeId                Int
+  giveFrom              DateTime?
+  giveTo                DateTime?
+  department            Department  @relation(fields: [departmentId], references: [id])
+  departmentId          Int
+}
