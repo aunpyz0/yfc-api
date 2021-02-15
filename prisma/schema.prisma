@@ -17,12 +17,13 @@ model Staff {
   lastname  String
   email     String
   password  String
-  role      Role
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    Int
 }
 
-enum Role {
-  STAFF
-  ACCOUNTANT
+model Role {
+  id      Int      @id @default(autoincrement())
+  name    String
 }
 
 model Supporter {
@@ -50,6 +51,11 @@ model GiveType {
   name      String
 }
 
+model PaymentType {
+  id        Int      @id @default(autoincrement())
+  name      String
+}
+
 model Give {
   id                    Int         @id @default(autoincrement())
   supporter             Supporter   @relation(fields: [supporterId], references: [id])
@@ -57,6 +63,8 @@ model Give {
   owner                 Staff       @relation(fields: [ownerId], references: [id])
   ownerId               Int
   amount                Float
+  paymentType           PaymentType @relation(fields: [paymentTypeId], references: [id])
+  paymentTypeId         Int
   transferDate          DateTime?
   transferFromBank      Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
   transferFromBankId    Int?
@@ -67,8 +75,8 @@ model Give {
   chequeBankBranch      String?
   chequeNumber          String?
   chequeDate            DateTime?
-  type                  GiveType    @relation(fields: [typeId], references: [id])
-  typeId                Int
+  giveType              GiveType    @relation(fields: [giveTypeId], references: [id])
+  giveTypeId            Int
   giveFrom              DateTime?
   giveTo                DateTime?
   department            Department  @relation(fields: [departmentId], references: [id])
