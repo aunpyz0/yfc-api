@@ -7,7 +7,10 @@
   "private": true,
   "scripts": {
     "tsc": "tsc -w",
-    "dev": "nodemon dist/app.js"
+    "build": "tsc",
+    "dev": "nodemon dist/app.js",
+    "start": "pm2",
+    "reset": "prisma migrate reset --preview-feature"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
