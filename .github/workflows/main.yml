@@ -25,4 +25,5 @@ jobs:
             git pull origin main
             yarn gen
             yarn build
+            yarn reset
             pm2 restart app
