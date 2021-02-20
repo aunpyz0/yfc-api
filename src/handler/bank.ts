@@ -7,10 +7,13 @@ export default function(prisma: PrismaClient) {
     router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name } = req.body
-            await prisma.bank.create({
+            const created = await prisma.bank.create({
                 data: { name }
             })
-            return res.sendStatus(201)
+            return res.status(201).json({
+                id: created.id,
+                name: created.name,
+            })
         } catch (e) {
             next(e)
         }
@@ -20,11 +23,14 @@ export default function(prisma: PrismaClient) {
         try {
             const id = parseInt(req.params.id, 10)
             const { name } = req.body
-            await prisma.bank.update({
+            const updated = await prisma.bank.update({
                 where: { id },
                 data: { name }
             })
-            return res.sendStatus(200)
+            return res.status(200).json({
+                id: updated.id,
+                name: updated.name,
+            })
         } catch (e) {
             next(e)
         }
