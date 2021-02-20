@@ -1,5 +1,7 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
 import { PrismaClient } from '@prisma/client'
+import cors from 'cors'
+import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import roleRouter from './handler/role'
 import staffRouter from './handler/staff'
@@ -10,13 +12,20 @@ import bankRouter from './handler/bank'
 import giveRouter from './handler/give'
 import paymentTypeRouter from './handler/paymentType'
 
+dotenv.config()
+
 const PORT = process.env.PORT || 8080
+const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
+
 const app: Application = express()
 const prisma = new PrismaClient()
 
+app.use(cors({
+    origin: CORS_ORIGIN
+}))
 app.use(bodyParser.json())
 
-app.use('/', (req, res) => res.send('ok'))
+app.get('/', (req, res) => res.send('ok'))
 app.use('/roles', roleRouter(prisma))
 app.use('/staffs', staffRouter(prisma))
 app.use('/supporters', supporterRouter(prisma))
