@@ -7,9 +7,8 @@
   "private": true,
   "scripts": {
     "tsc": "tsc -w",
-    "build": "tsc",
     "dev": "nodemon dist/app.js",
-    "start": "pm2",
+    "build": "tsc",
     "reset": "prisma migrate reset --preview-feature"
   },
   "devDependencies": {
