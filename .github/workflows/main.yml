@@ -23,6 +23,7 @@ jobs:
           script: |
             cd app/yfc-api
             git pull origin main
+            yarn install
             yarn gen
             yarn build
             yarn reset
