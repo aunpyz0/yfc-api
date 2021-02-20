@@ -10,7 +10,7 @@
     "dev": "nodemon dist/src/app.js",
     "build": "tsc",
     "gen": "prisma generate",
-    "reset": "prisma migrate reset --preview-feature"
+    "reset": "prisma migrate reset --preview-feature --force"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
