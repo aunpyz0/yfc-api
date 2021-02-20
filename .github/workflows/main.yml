@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_PRIVATE_KEY }}
           script: |
-            cd /app/yfc-api
+            cd app/yfc-api
             git pull origin main
             yarn gen
             yarn build
