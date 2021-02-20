@@ -19,5 +19,5 @@ jobs:
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          repository: ehudthelefthand/yfc-api:main
+          tags: ehudthelefthand/yfc-api:main
           push: true
