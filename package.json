@@ -9,7 +9,8 @@
     "tsc": "tsc -w",
     "dev": "nodemon dist/src/app.js",
     "build": "tsc",
-    "gen": "prisma generate",
+    "migrate": "prisma migrate dev --preview-feature",
+    "generate": "prisma generate",
     "reset": "prisma migrate reset --preview-feature --force"
   },
   "devDependencies": {
