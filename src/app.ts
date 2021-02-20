@@ -16,6 +16,7 @@ const prisma = new PrismaClient()
 
 app.use(bodyParser.json())
 
+app.use('/', (req, res) => res.send('ok'))
 app.use('/roles', roleRouter(prisma))
 app.use('/staffs', staffRouter(prisma))
 app.use('/supporters', supporterRouter(prisma))
