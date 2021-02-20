@@ -65,6 +65,7 @@ model Give {
   amount                Float
   paymentType           PaymentType @relation(fields: [paymentTypeId], references: [id])
   paymentTypeId         Int
+  receiveDate           DateTime?
   transferDate          DateTime?
   transferFromBank      Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
   transferFromBankId    Int?
