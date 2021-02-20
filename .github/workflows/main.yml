@@ -15,7 +15,7 @@ jobs:
     steps:
       - 
         name: Build Image and Push
-        uses: docker/build-pust-action@v1
+        uses: docker/build-push-action@v2
         with:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
