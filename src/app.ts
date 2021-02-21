@@ -25,6 +25,7 @@ app.use(cors({
 }))
 app.use(bodyParser.json())
 
+app.use('/evidence', express.static('uploads'))
 app.get('/', (req, res) => res.send('ok'))
 app.use('/roles', roleRouter(prisma))
 app.use('/staffs', staffRouter(prisma))

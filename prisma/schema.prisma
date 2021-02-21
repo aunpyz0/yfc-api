@@ -82,4 +82,5 @@ model Give {
   giveTo                DateTime?
   department            Department  @relation(fields: [departmentId], references: [id])
   departmentId          Int
+  evidence              String?
 }

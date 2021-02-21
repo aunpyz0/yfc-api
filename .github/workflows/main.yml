@@ -27,4 +27,5 @@ jobs:
             yarn gen
             yarn build
             yarn reset
+            rm -rf uploads
             pm2 restart app
