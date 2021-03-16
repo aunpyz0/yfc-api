@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { isBefore } from 'date-fns';
 import { Request, Response, NextFunction } from 'express'
 import { hash, ACCESS_TOKEN } from '../token'
 
@@ -10,13 +11,12 @@ export default function(prisma: PrismaClient) {
             const token = await prisma.token.findFirst({
                 where: {
                     token: hash(tokenStr),
-                    type: ACCESS_TOKEN,
                 },
                 include: {
                     Staff: true
                 }
             })
-            if (token) {
+            if (token?.type === ACCESS_TOKEN && isBefore(new Date(), new Date(token.expiredAt))) {
                 req.user = token.Staff
             }
         }

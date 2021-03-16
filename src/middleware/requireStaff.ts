@@ -4,7 +4,5 @@ export default function(req: Request, res: Response, next: NextFunction) {
     if (req.user) {
         return next()
     }
-    return res.status(401).json({
-        message: 'Required Staff'
-    })
+    return res.sendStatus(401)
 }

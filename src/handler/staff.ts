@@ -1,11 +1,11 @@
-import express, { NextFunction, Request, Response } from 'express'
+import express, { NextFunction, Request, Response, Router } from 'express'
 import bcrypt from 'bcrypt'
 import { PrismaClient } from '@prisma/client'
 import requireAccountant from '../middleware/requireAccountant'
 
 const saltRounds = 12
 
-export default function(prisma: PrismaClient) {
+export default function(prisma: PrismaClient): Router {
     const router = express.Router()
 
     router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {

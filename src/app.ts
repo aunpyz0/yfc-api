@@ -14,6 +14,7 @@ import giveRouter from './handler/give'
 import paymentTypeRouter from './handler/paymentType'
 import loginRouter from './handler/login'
 import logoutRouter from './handler/logout'
+import refreshRouter from './handler/refresh'
 import setStaff from './middleware/setStaff'
 
 dotenv.config()
@@ -34,19 +35,16 @@ app.use(json())
 app.get('/', (req, res) => res.send('ok'))
 app.use('/evidence', express.static('uploads'))
 app.use('/login', loginRouter(prisma))
-
-
-const privateRoute = Router()
-privateRoute.use(setStaff(prisma))
-privateRoute.use('/logout', logoutRouter(prisma))
-privateRoute.use('/roles', roleRouter(prisma))
-privateRoute.use('/staffs', staffRouter(prisma))
-privateRoute.use('/supporters', supporterRouter(prisma))
-privateRoute.use('/departments', departmentRouter(prisma))
-privateRoute.use('/givetypes', giveTypeRouter(prisma))
-privateRoute.use('/banks', bankRouter(prisma))
-privateRoute.use('/paymenttypes', paymentTypeRouter(prisma))
-privateRoute.use('/gives', giveRouter(prisma))
+app.use('/refresh', refreshRouter(prisma))
+app.use('/logout', setStaff(prisma), logoutRouter(prisma))
+app.use('/roles', setStaff(prisma), roleRouter(prisma))
+app.use('/staffs', setStaff(prisma), staffRouter(prisma))
+app.use('/supporters', setStaff(prisma), supporterRouter(prisma))
+app.use('/departments', setStaff(prisma), departmentRouter(prisma))
+app.use('/givetypes', setStaff(prisma), giveTypeRouter(prisma))
+app.use('/banks',  setStaff(prisma), bankRouter(prisma))
+app.use('/paymenttypes', setStaff(prisma), paymentTypeRouter(prisma))
+app.use('/gives',  setStaff(prisma), giveRouter(prisma))
 
 app.use((err: Error, req: Request , res: Response, next: NextFunction) => {
     console.error(err)
