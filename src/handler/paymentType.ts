@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response } from 'express'
+import requireStaff from '../middleware/requireStaff'
 
 export default function(prisma: PrismaClient) {
     const router = express.Router()
@@ -42,7 +43,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const banks = await prisma.paymentType.findMany()
             return res.json(banks)
@@ -51,7 +52,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const bank = await prisma.paymentType.findFirst({

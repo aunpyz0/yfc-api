@@ -1,13 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { PrismaClient } from '@prisma/client'
+import requireAccountant from '../middleware/requireAccountant'
 
 const saltRounds = 12
 
 export default function(prisma: PrismaClient) {
     const router = express.Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const { code, firstname, lastname, email, password, roleId } = req.body
         try {
             const hashed = await bcrypt.hash(password, saltRounds)
@@ -27,7 +28,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const { id, code, firstname, lastname, email, password, roleId } = req.body
         try {
             const hashed = await bcrypt.hash(password, saltRounds)
@@ -48,7 +49,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10)
         try {
             await prisma.staff.delete({
@@ -60,7 +61,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const staffs = await prisma.staff.findMany({
                 include: {
@@ -73,7 +74,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10)
         try {
             const staff = await prisma.staff.findFirst({

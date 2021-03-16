@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response } from 'express'
+import requireAccountant from '../middleware/requireAccountant'
+import requireStaff from '../middleware/requireStaff'
 
 export default function(prisma: PrismaClient) {
     const router = express.Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { code, firstname, lastname } = req.body
             await prisma.supporter.create({
@@ -20,7 +22,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const { code, firstname, lastname } = req.body
@@ -38,7 +40,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             await prisma.supporter.delete({
@@ -50,7 +52,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const supporters = await prisma.supporter.findMany()
             return res.json(supporters)
@@ -59,7 +61,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const supporter = await prisma.supporter.findFirst({

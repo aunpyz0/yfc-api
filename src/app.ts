@@ -12,6 +12,7 @@ import giveTypeRouter from './handler/giveType'
 import bankRouter from './handler/bank'
 import giveRouter from './handler/give'
 import paymentTypeRouter from './handler/paymentType'
+import loginRouter from './handler/login'
 import setStaff from './middleware/setStaff'
 
 dotenv.config()
@@ -32,6 +33,9 @@ app.use(json())
 app.use(setStaff(prisma))
 app.get('/', (req, res) => res.send('ok'))
 app.use('/evidence', express.static('uploads'))
+
+app.use('/login', loginRouter(prisma))
+
 app.use('/roles', roleRouter(prisma))
 app.use('/staffs', staffRouter(prisma))
 app.use('/supporters', supporterRouter(prisma))

@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 import { Router, NextFunction, Request, Response } from 'express'
+import requireAccountant from '../middleware/requireAccountant'
+import requireStaff from '../middleware/requireStaff'
 
 export default function(prisma: PrismaClient): Router {
     const router = Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const { name } = req.body
         try {
             const created = await prisma.giveType.create({
@@ -19,7 +21,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const { name } = req.body
@@ -36,7 +38,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             await prisma.giveType.delete({
@@ -48,7 +50,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const giveTypes = await prisma.giveType.findMany()
             return res.json(giveTypes)
@@ -57,7 +59,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const giveType = await prisma.giveType.findFirst({
