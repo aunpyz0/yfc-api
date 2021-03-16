@@ -34,6 +34,12 @@ export default function(prisma: PrismaClient): Router {
                 const refreshTokenExpires = addMinutes(now, REFRESH_TOKEN_AGE)
                 const accessTokenExpires = addMinutes(now, ACCESS_TOKEN_AGE)
 
+                await prisma.token.deleteMany({
+                    where: {
+                        staffId: staff.id
+                    }
+                })
+
                 await Promise.all([
                     prisma.token.create({
                         data: {

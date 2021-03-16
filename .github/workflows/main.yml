@@ -24,7 +24,8 @@ jobs:
             cd app/yfc-api
             git pull origin main
             yarn install
-            yarn gen
+            yarn migrate
+            yarn generate
             yarn build
             yarn reset
             pm2 restart app
