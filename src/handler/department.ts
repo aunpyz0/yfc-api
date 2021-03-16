@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response } from 'express'
+import requireAccountant from '../middleware/requireAccountant'
+import requireStaff from '../middleware/requireStaff'
 
 export default function(prisma: PrismaClient) {
     const router = express.Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name } = req.body
             const created = await prisma.department.create({
@@ -19,7 +21,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const { name } = req.body
@@ -36,7 +38,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             await prisma.department.delete({
@@ -48,7 +50,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const departments = await prisma.department.findMany()
             return res.json(departments)
@@ -57,7 +59,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const department = await prisma.department.findFirst({

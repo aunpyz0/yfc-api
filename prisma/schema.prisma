@@ -11,76 +11,92 @@ generator client {
 }
 
 model Staff {
-  id        Int      @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
   code      String
   firstname String
   lastname  String
   email     String
   password  String
-  role      Role     @relation(fields: [roleId], references: [id])
+  role      Role    @relation(fields: [roleId], references: [id])
   roleId    Int
+  Token     Token[]
+  Give      Give[]
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  token     String
+  expiredAt DateTime
+  type      String
+  Staff     Staff    @relation(fields: [staffId], references: [id])
+  staffId   Int
 }
 
 model Role {
-  id      Int      @id @default(autoincrement())
-  name    String
+  id    Int     @id @default(autoincrement())
+  name  String
+  Staff Staff[]
 }
 
 model Supporter {
-  id        Int      @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   code      String
   firstname String
   lastname  String
+  Give      Give[]
 }
 
 model Department {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id   Int    @id @default(autoincrement())
+  name String
+  Give Give[]
 }
 
 model Bank {
-  id                Int      @id @default(autoincrement())
-  name              String
-  transferFromBank  Give[]   @relation(name: "TransferFromBank")
-  transferToBank    Give[]   @relation(name: "TransferToBank")
-  chequeBank        Give[]   @relation(name: "ChequeBank")
+  id               Int    @id @default(autoincrement())
+  name             String
+  transferFromBank Give[] @relation(name: "TransferFromBank")
+  transferToBank   Give[] @relation(name: "TransferToBank")
+  chequeBank       Give[] @relation(name: "ChequeBank")
 }
 
 model GiveType {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id   Int    @id @default(autoincrement())
+  name String
+  Give Give[]
 }
 
 model PaymentType {
-  id        Int      @id @default(autoincrement())
-  name      String
+  id   Int    @id @default(autoincrement())
+  name String
+  Give Give[]
 }
 
 model Give {
-  id                    Int         @id @default(autoincrement())
-  supporter             Supporter   @relation(fields: [supporterId], references: [id])
-  supporterId           Int
-  owner                 Staff       @relation(fields: [ownerId], references: [id])
-  ownerId               Int
-  amount                Float
-  paymentType           PaymentType @relation(fields: [paymentTypeId], references: [id])
-  paymentTypeId         Int
-  receiveDate           DateTime?
-  transferDate          DateTime?
-  transferFromBank      Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
-  transferFromBankId    Int?
-  transferToBank        Bank?       @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
-  transferToBankId      Int?
-  chequeBank            Bank?       @relation(name: "ChequeBank", fields: [chequeBankId], references: [id])
-  chequeBankId          Int?
-  chequeBankBranch      String?
-  chequeNumber          String?
-  chequeDate            DateTime?
-  giveType              GiveType    @relation(fields: [giveTypeId], references: [id])
-  giveTypeId            Int
-  giveFrom              DateTime?
-  giveTo                DateTime?
-  department            Department  @relation(fields: [departmentId], references: [id])
-  departmentId          Int
-  evidence              String?
+  id                 Int         @id @default(autoincrement())
+  supporter          Supporter   @relation(fields: [supporterId], references: [id])
+  supporterId        Int
+  owner              Staff       @relation(fields: [ownerId], references: [id])
+  ownerId            Int
+  amount             Float
+  paymentType        PaymentType @relation(fields: [paymentTypeId], references: [id])
+  paymentTypeId      Int
+  receiveDate        DateTime?
+  transferDate       DateTime?
+  transferFromBank   Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
+  transferFromBankId Int?
+  transferToBank     Bank?       @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
+  transferToBankId   Int?
+  chequeBank         Bank?       @relation(name: "ChequeBank", fields: [chequeBankId], references: [id])
+  chequeBankId       Int?
+  chequeBankBranch   String?
+  chequeNumber       String?
+  chequeDate         DateTime?
+  giveType           GiveType    @relation(fields: [giveTypeId], references: [id])
+  giveTypeId         Int
+  giveFrom           DateTime?
+  giveTo             DateTime?
+  department         Department  @relation(fields: [departmentId], references: [id])
+  departmentId       Int
+  evidence           String?
 }

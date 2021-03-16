@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import express, { NextFunction, Request, Response } from 'express'
+import { Router, NextFunction, Request, Response } from 'express'
 
-export default function(prisma: PrismaClient) {
-    const router = express.Router()
+export default function(prisma: PrismaClient): Router {
+    const router = Router()
 
     router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const { name } = req.body
