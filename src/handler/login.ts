@@ -15,6 +15,9 @@ export default function(prisma: PrismaClient): Router {
             const staff = await prisma.staff.findFirst({
                 where: {
                     email: email,   
+                },
+                include: {
+                    role: true,
                 }
             })
             if (staff) {
@@ -64,6 +67,7 @@ export default function(prisma: PrismaClient): Router {
                     lastname: staff.lastname,
                     refreshToken: refreshToken,
                     accessToken: accessToken,
+                    role: staff.role.name,
                 })
             } else {
                 return res.status(401).json({

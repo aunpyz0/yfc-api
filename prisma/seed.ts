@@ -96,7 +96,7 @@ async function main() {
             code: "STAFF001",
             firstname: "ภีระวัฒน์",
             lastname: "พุ่มบัว",
-            email: "peerawat@test.com",
+            email: "staff1@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 1
         }
@@ -106,7 +106,7 @@ async function main() {
             code: "STAFF002",
             firstname: "ผู้รับใช้",
             lastname: "สัตย์ชื่อ",
-            email: "honestservant@test.com",
+            email: "staff2@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 1
         }
@@ -116,7 +116,7 @@ async function main() {
             code: "ACCT001",
             firstname: "ใจงาม",
             lastname: "จริงจริง",
-            email: "jaingam@test.com",
+            email: "acct1@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 2
         }
@@ -126,7 +126,7 @@ async function main() {
             code: "ACCT002",
             firstname: "พนักงานบัญชี",
             lastname: "ตัวจริง",
-            email: "realaccountant@test.com",
+            email: "acct2@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 2
         }

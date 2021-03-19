@@ -6,7 +6,6 @@ import { hash, ACCESS_TOKEN } from '../token'
 export default function(prisma: PrismaClient) {
     return async function(req: Request, res: Response, next: NextFunction) {
         const tokenStr = req.headers.authorization?.slice('Bearer '.length) || ''
-    
         if (tokenStr) {
             const token = await prisma.token.findFirst({
                 where: {
@@ -21,6 +20,6 @@ export default function(prisma: PrismaClient) {
             }
         }
 
-        next()
+        return next()
     }
 }
