@@ -21,6 +21,7 @@ dotenv.config()
 
 const PORT = process.env.PORT || 8080
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
+console.log('CORS_ORIGIN', CORS_ORIGIN)
 
 const app: Application = express()
 const prisma = new PrismaClient()
@@ -36,7 +37,6 @@ app.get('/', (req, res) => res.send('ok'))
 app.use('/evidence', express.static('uploads'))
 app.use('/login', loginRouter(prisma))
 app.use('/refresh', refreshRouter(prisma))
-app.use('/me', setStaff(prisma), profileRouter())
 app.use('/logout', setStaff(prisma), logoutRouter(prisma))
 app.use('/roles', setStaff(prisma), roleRouter(prisma))
 app.use('/staffs', setStaff(prisma), staffRouter(prisma))
