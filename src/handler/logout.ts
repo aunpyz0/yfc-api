@@ -6,9 +6,12 @@ export default function(prisma: PrismaClient): Router {
     const router = Router()
     router.post('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await prisma.token.deleteMany({
+            await prisma.staff.update({
+                data: {
+                    token: null,
+                },
                 where: {
-                    staffId: req.user!.id
+                    id: req.user!.id
                 }
             })
             return res.sendStatus(200)

@@ -15,6 +15,7 @@ import paymentTypeRouter from './handler/paymentType'
 import loginRouter from './handler/login'
 import logoutRouter from './handler/logout'
 import refreshRouter from './handler/refresh'
+import profileRouter from './handler/profile'
 import setStaff from './middleware/setStaff'
 
 dotenv.config()
@@ -29,13 +30,14 @@ app.use(helmet())
 app.use(cors({
     origin: CORS_ORIGIN
 }))
-app.use(urlencoded())
+app.use(urlencoded({ extended: true }))
 app.use(json())
 
 app.get('/', (req, res) => res.send('ok'))
 app.use('/evidence', express.static('uploads'))
 app.use('/login', loginRouter(prisma))
 app.use('/refresh', refreshRouter(prisma))
+app.use('/me', setStaff(prisma), profileRouter())
 app.use('/logout', setStaff(prisma), logoutRouter(prisma))
 app.use('/roles', setStaff(prisma), roleRouter(prisma))
 app.use('/staffs', setStaff(prisma), staffRouter(prisma))

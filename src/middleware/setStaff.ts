@@ -1,25 +1,36 @@
 import { PrismaClient } from '@prisma/client';
-import { isBefore } from 'date-fns';
 import { Request, Response, NextFunction } from 'express'
-import { hash, ACCESS_TOKEN } from '../token'
+import { verifyToken, ACCESS_TOKEN } from '../token'
 
 export default function(prisma: PrismaClient) {
+    
+    const TOKEN_KEY = process.env.TOKEN_KEY || ''
+
     return async function(req: Request, res: Response, next: NextFunction) {
         const tokenStr = req.headers.authorization?.slice('Bearer '.length) || ''
-        if (tokenStr) {
-            const token = await prisma.token.findFirst({
-                where: {
-                    token: hash(tokenStr),
-                },
-                include: {
-                    Staff: true
-                }
-            })
-            if (token?.type === ACCESS_TOKEN && isBefore(new Date(), new Date(token.expiredAt))) {
-                req.user = token.Staff
-            }
+        if (!tokenStr) {
+            return next()
         }
 
-        return next()
+        try {
+            const data = verifyToken(tokenStr)
+            if (data.type !== ACCESS_TOKEN) {
+                return res.sendStatus(401)
+            }
+            const staff = await prisma.staff.findUnique({
+                where: {
+                    id: data.id,
+                },
+                include: {
+                    role: true,
+                }
+            })
+
+            req.user = staff!
+            next()
+
+        } catch (err) {
+            next()
+        }   
     }
 }

@@ -15,21 +15,12 @@ model Staff {
   code      String
   firstname String
   lastname  String
-  email     String
+  email     String  @unique
   password  String
   role      Role    @relation(fields: [roleId], references: [id])
   roleId    Int
-  Token     Token[]
   Give      Give[]
-}
-
-model Token {
-  id        Int      @id @default(autoincrement())
-  token     String
-  expiredAt DateTime
-  type      String
-  Staff     Staff    @relation(fields: [staffId], references: [id])
-  staffId   Int
+  token     String?
 }
 
 model Role {
