@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
+import requireStaff from '../middleware/requireStaff'
 
 export default function(prisma: PrismaClient) {
     const storage = multer.diskStorage({
@@ -17,18 +18,32 @@ export default function(prisma: PrismaClient) {
     const upload = multer({ storage })
     const router = express.Router()
 
-    router.post('/', upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await prisma.give.create({
-                data: parseGive(req)
+            const data = parseGive(req)
+            const foundCollapse = await prisma.give.findFirst({
+                where: {
+                    AND: {
+                        giveFrom:{
+                            lte: data.giveTo as Date
+                        },
+                        giveTo: {
+                            gte: data.giveFrom as Date
+                        }
+                    }
+                }
             })
+            if (foundCollapses) {
+                return res.sendStatus(422)
+            }
+            await prisma.give.create({ data })
             return res.sendStatus(201)
         } catch (e) {
             next(e)
         }
     })
 
-    router.put('/:id', upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10)
         try {
             if (req.file && req.file.filename) {
@@ -44,9 +59,27 @@ export default function(prisma: PrismaClient) {
         }
 
         try {
+            const data = parseGive(req)
+            const foundCollapses = await prisma.give.findMany({
+                where: {
+                    AND: {
+                        giveFrom:{
+                            lte: data.giveTo as Date
+                        },
+                        giveTo: {
+                            gte: data.giveFrom as Date
+                        }
+                    }
+                }
+            })
+            
+            const isCollaped = foundCollapses.filter(give => give.id !== id).length > 0
+            if (isCollaped) {
+                return res.sendStatus(422)
+            }
             await prisma.give.update({
                 where: { id },
-                data: parseGive(req)
+                data
             })
             return res.sendStatus(200)
         } catch (e) {
@@ -54,7 +87,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const deleted = await prisma.give.delete({
@@ -67,9 +100,9 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const gives = await prisma.give.findMany({
+            let option: Prisma.GiveFindManyArgs = {
                 include: {
                     supporter: true,
                     owner: true,
@@ -80,14 +113,21 @@ export default function(prisma: PrismaClient) {
                     transferToBank: true,
                     chequeBank: true,
                 }
-            })
+            }
+
+            if (req.user!.roleId === 1) {
+                option.where = {
+                    ownerId: req.user!.id,
+                }
+            }
+            const gives = await prisma.give.findMany(option)
             return res.json(gives)
         } catch (e) {
             next(e)
         }
     })
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const give = await prisma.give.findFirst({
@@ -114,6 +154,9 @@ export default function(prisma: PrismaClient) {
             paymentTypeId: Number(req.body.paymentTypeId),
             giveTypeId: Number(req.body.giveTypeId),
             departmentId: Number(req.body.departmentId),
+        }
+        if (req.user!.roleId === 1) {
+            give.ownerId = req.user!.id
         }
         if (give.paymentTypeId === 1) {
             give.transferDate = new Date(req.body.transferDate)
