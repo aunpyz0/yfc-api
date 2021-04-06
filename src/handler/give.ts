@@ -33,7 +33,7 @@ export default function(prisma: PrismaClient) {
                     }
                 }
             })
-            if (foundCollapses) {
+            if (foundCollapse) {
                 return res.sendStatus(422)
             }
             await prisma.give.create({ data })

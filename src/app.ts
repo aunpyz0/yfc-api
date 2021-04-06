@@ -15,7 +15,6 @@ import paymentTypeRouter from './handler/paymentType'
 import loginRouter from './handler/login'
 import logoutRouter from './handler/logout'
 import refreshRouter from './handler/refresh'
-import profileRouter from './handler/profile'
 import setStaff from './middleware/setStaff'
 
 dotenv.config()
