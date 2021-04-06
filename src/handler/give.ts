@@ -31,7 +31,7 @@ export default function(prisma: PrismaClient) {
                             gte: data.giveFrom as Date
                         }
                     },
-                    ownerId: req.user!.id,
+                    ownerId: data.ownerId,
                 }
             })
             if (foundCollapse) {
@@ -71,7 +71,7 @@ export default function(prisma: PrismaClient) {
                             gte: data.giveFrom as Date
                         }
                     },
-                    ownerId: req.user!.id,
+                    ownerId: data.ownerId,
                 }
             })
             
