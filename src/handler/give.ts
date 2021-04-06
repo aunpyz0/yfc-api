@@ -30,7 +30,8 @@ export default function(prisma: PrismaClient) {
                         giveTo: {
                             gte: data.giveFrom as Date
                         }
-                    }
+                    },
+                    ownerId: req.user!.id,
                 }
             })
             if (foundCollapse) {
@@ -69,7 +70,8 @@ export default function(prisma: PrismaClient) {
                         giveTo: {
                             gte: data.giveFrom as Date
                         }
-                    }
+                    },
+                    ownerId: req.user!.id,
                 }
             })
             
