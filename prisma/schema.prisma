@@ -44,11 +44,21 @@ model Department {
 }
 
 model Bank {
-  id               Int    @id @default(autoincrement())
-  name             String
-  transferFromBank Give[] @relation(name: "TransferFromBank")
-  transferToBank   Give[] @relation(name: "TransferToBank")
-  chequeBank       Give[] @relation(name: "ChequeBank")
+  id                Int    @id @default(autoincrement())
+  name              String
+  transferFromBank  Give[] @relation(name: "TransferFromBank")
+  transferToBank    Give[] @relation(name: "TransferToBank")
+  chequeBank        Give[] @relation(name: "ChequeBank")
+  yfcBanks          YFCBank[]
+}
+
+model YFCBank {
+  id              Int @id @default(autoincrement())
+  name            String
+  accountNumber   String
+  bank            Bank @relation(fields: [bankId], references: [id])            
+  bankId          Int
+  bankBranch      String
 }
 
 model GiveType {
