@@ -6,7 +6,7 @@ import { generateAccessToken, generateRefreshToken } from '../token'
 export default function(prisma: PrismaClient): Router {
     const router = Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { email, password } = req.body
             const staff = await prisma.staff.findUnique({

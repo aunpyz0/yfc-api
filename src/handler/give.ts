@@ -4,8 +4,10 @@ import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
 import requireStaff from '../middleware/requireStaff'
+import setStaff from '../middleware/setStaff'
 
 export default function(prisma: PrismaClient) {
+
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, 'uploads')
@@ -18,7 +20,9 @@ export default function(prisma: PrismaClient) {
     const upload = multer({ storage })
     const router = express.Router()
 
-    router.post('/', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
+    router.use(setStaff(prisma))
+
+    router.post('/gives', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
         try {
             const data = parseGive(req)
             const foundCollapse = await prisma.give.findFirst({
@@ -44,7 +48,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.put('/:id', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/gives/:id', requireStaff, upload.single('evidence'), async (req: Request, res: Response, next: NextFunction) => {
         const id = parseInt(req.params.id, 10)
         try {
             if (req.file && req.file.filename) {
@@ -89,7 +93,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/gives/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const deleted = await prisma.give.delete({
@@ -102,7 +106,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/gives', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             let option: Prisma.GiveFindManyArgs = {
                 include: {
@@ -129,7 +133,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/gives/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const give = await prisma.give.findFirst({

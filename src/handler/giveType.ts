@@ -2,11 +2,14 @@ import { PrismaClient } from '@prisma/client'
 import { Router, NextFunction, Request, Response } from 'express'
 import requireAccountant from '../middleware/requireAccountant'
 import requireStaff from '../middleware/requireStaff'
+import setStaff from '../middleware/setStaff'
 
 export default function(prisma: PrismaClient): Router {
     const router = Router()
 
-    router.post('/', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
+    router.use(setStaff(prisma))
+
+    router.post('/givetypes', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         const { name } = req.body
         try {
             const created = await prisma.giveType.create({
@@ -21,7 +24,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.put('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/givetypes/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const { name } = req.body
@@ -38,7 +41,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.delete('/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/givetypes/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             await prisma.giveType.delete({
@@ -50,7 +53,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/givetypes', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const giveTypes = await prisma.giveType.findMany()
             return res.json(giveTypes)
@@ -59,7 +62,7 @@ export default function(prisma: PrismaClient): Router {
         }
     })
 
-    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/givetypes/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const giveType = await prisma.giveType.findFirst({

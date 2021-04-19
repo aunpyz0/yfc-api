@@ -1,11 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response } from 'express'
+import requireAccountant from '../middleware/requireAccountant'
 import requireStaff from '../middleware/requireStaff'
+import setStaff from '../middleware/setStaff'
 
 export default function(prisma: PrismaClient) {
     const router = express.Router()
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.use(setStaff(prisma))
+
+    router.post('/paymenttypes', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { name } = req.body
             await prisma.paymentType.create({
@@ -17,7 +21,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/paymenttypes/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const { name } = req.body
@@ -31,7 +35,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/paymenttypes/:id', requireAccountant, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             await prisma.paymentType.delete({
@@ -43,7 +47,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/paymenttypes', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const banks = await prisma.paymentType.findMany()
             return res.json(banks)
@@ -52,7 +56,7 @@ export default function(prisma: PrismaClient) {
         }
     })
 
-    router.get('/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
+    router.get('/paymenttypes/:id', requireStaff, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = parseInt(req.params.id, 10)
             const bank = await prisma.paymentType.findFirst({

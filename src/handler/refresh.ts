@@ -4,7 +4,8 @@ import { generateAccessToken } from '../token'
 
 export default function (prisma: PrismaClient): Router {
     const router = Router()
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+
+    router.post('/refresh', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const tokenStr = req.body.refreshToken
             if (!tokenStr) {
@@ -28,5 +29,6 @@ export default function (prisma: PrismaClient): Router {
             next(e)
         }
     })
+
     return router
 }
