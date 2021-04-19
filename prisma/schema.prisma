@@ -47,18 +47,18 @@ model Bank {
   id                Int    @id @default(autoincrement())
   name              String
   transferFromBank  Give[] @relation(name: "TransferFromBank")
-  transferToBank    Give[] @relation(name: "TransferToBank")
   chequeBank        Give[] @relation(name: "ChequeBank")
   yfcBanks          YFCBank[]
 }
 
 model YFCBank {
-  id              Int @id @default(autoincrement())
-  name            String
-  accountNumber   String
-  bank            Bank @relation(fields: [bankId], references: [id])            
-  bankId          Int
-  bankBranch      String
+  id                Int @id @default(autoincrement())
+  name              String
+  accountNumber     String
+  bank              Bank @relation(fields: [bankId], references: [id])            
+  bankId            Int
+  bankBranch        String
+  transferToBank    Give[] @relation(name: "TransferToBank")
 }
 
 model GiveType {
@@ -86,7 +86,7 @@ model Give {
   transferDate       DateTime?
   transferFromBank   Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
   transferFromBankId Int?
-  transferToBank     Bank?       @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
+  transferToBank     YFCBank?    @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
   transferToBankId   Int?
   chequeBank         Bank?       @relation(name: "ChequeBank", fields: [chequeBankId], references: [id])
   chequeBankId       Int?

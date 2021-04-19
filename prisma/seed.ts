@@ -23,7 +23,7 @@ async function main() {
     })
 
     // ------ bank ------
-    await prisma.bank.create({ 
+    const scb = await prisma.bank.create({ 
         data: {
             name: 'SCB',
         },
@@ -51,6 +51,25 @@ async function main() {
     await prisma.bank.create({ 
         data: {
             name: 'GBP',
+        },
+    })
+
+    // ------ yfc bank ------
+    await prisma.yFCBank.create({ 
+        data: {
+            name: 'YFC SCB',
+            accountNumber: '123-4-12313',
+            bankBranch: 'Bangkok',
+            bankId: scb.id
+        },
+    })
+
+    await prisma.yFCBank.create({ 
+        data: {
+            name: 'YFC SCB 2',
+            accountNumber: '542-3-13414',
+            bankBranch: 'Chiang Mai',
+            bankId: scb.id
         },
     })
 

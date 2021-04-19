@@ -11,7 +11,8 @@
     "build": "tsc",
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
-    "reset": "prisma migrate reset --preview-feature --force"
+    "reset": "prisma migrate reset --preview-feature --force",
+    "seed": "prisma db seed --preview-feature"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
