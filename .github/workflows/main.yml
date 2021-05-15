@@ -25,7 +25,6 @@ jobs:
             git pull origin main
             yarn install
             yarn migrate
-            yarn generate
             yarn build
             yarn reset
             pm2 restart app

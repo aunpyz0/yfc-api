@@ -10,7 +10,6 @@
     "dev": "nodemon dist/src/app.js",
     "build": "tsc",
     "migrate": "prisma migrate dev --preview-feature",
-    "generate": "prisma generate",
     "reset": "prisma migrate reset --preview-feature --force",
     "seed": "prisma db seed --preview-feature",
     "test": "mocha -r ts-node/register src/**/*.test.ts"
