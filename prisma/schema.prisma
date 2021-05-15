@@ -11,36 +11,28 @@ generator client {
 }
 
 model Staff {
-  id        Int     @id @default(autoincrement())
-  code      String
-  firstname String
-  lastname  String
-  email     String  @unique
-  password  String
-  role      Role    @relation(fields: [roleId], references: [id])
-  roleId    Int
-  Give      Give[]
-  token     String?
+  id              Int       @id @default(autoincrement())
+  code            String
+  firstname       String
+  lastname        String
+  email           String    @unique
+  password        String
+  role            Role      @relation(fields: [roleId], references: [id])
+  roleId          Int
+  Give            Give[]
+  refreshToken    String?
 }
 
 model Role {
-  id    Int     @id @default(autoincrement())
-  name  String
-  Staff Staff[]
+  id      Int         @id @default(autoincrement())
+  name    String
 }
 
 model Supporter {
-  id        Int    @id @default(autoincrement())
-  code      String
-  firstname String
-  lastname  String
-  Give      Give[]
-}
-
-model Department {
-  id   Int    @id @default(autoincrement())
-  name String
-  Give Give[]
+  id          Int       @id @default(autoincrement())
+  code        String
+  firstname   String
+  lastname    String
 }
 
 model Bank {
@@ -54,50 +46,66 @@ model Bank {
 model YFCBank {
   id                Int @id @default(autoincrement())
   name              String
-  accountNumber     String
-  bank              Bank @relation(fields: [bankId], references: [id])            
+  accountNo         String
   bankId            Int
-  bankBranch        String
-  transferToBank    Give[] @relation(name: "TransferToBank")
-}
-
-model GiveType {
-  id   Int    @id @default(autoincrement())
-  name String
-  Give Give[]
-}
-
-model PaymentType {
-  id   Int    @id @default(autoincrement())
-  name String
-  Give Give[]
+  bank              Bank @relation(fields: [bankId], references: [id])            
 }
 
 model Give {
-  id                 Int         @id @default(autoincrement())
-  supporter          Supporter   @relation(fields: [supporterId], references: [id])
-  supporterId        Int
-  owner              Staff       @relation(fields: [ownerId], references: [id])
-  ownerId            Int
-  amount             Float
-  paymentType        PaymentType @relation(fields: [paymentTypeId], references: [id])
-  paymentTypeId      Int
-  receiveDate        DateTime?
-  transferDate       DateTime?
-  transferFromBank   Bank?       @relation(name: "TransferFromBank", fields: [transferFromBankId], references: [id])
-  transferFromBankId Int?
-  transferToBank     YFCBank?    @relation(name: "TransferToBank", fields: [transferToBankId], references: [id])
-  transferToBankId   Int?
-  chequeBank         Bank?       @relation(name: "ChequeBank", fields: [chequeBankId], references: [id])
-  chequeBankId       Int?
-  chequeBankBranch   String?
-  chequeNumber       String?
-  chequeDate         DateTime?
-  giveType           GiveType    @relation(fields: [giveTypeId], references: [id])
-  giveTypeId         Int
-  giveFrom           DateTime?
-  giveTo             DateTime?
-  department         Department  @relation(fields: [departmentId], references: [id])
-  departmentId       Int
-  evidence           String?
+  id                    Int           @id @default(autoincrement())
+  supporter             Supporter     @relation(fields: [supporterId], references: [id])
+  supporterId           Int
+  receiver              Staff         @relation(fields: [ownerId], references: [id])
+  receiverId            Int
+  receiveDate           DateTime
+  amount                Float
+  evidence              String?
+}
+
+model TransferDetail {
+  id                    Int           @id @default(autoincrement())
+  giveId                Int
+  give                  Give          @relation(fields: [giveId], references: [id])
+  transferDate          DateTime
+  transferFromBankId    Int
+  transferFromBank      Bank          @relation(fields: [transferFromBankId], references: [id])
+  transferToBankId      Int
+  transferToBank        YFCBank       @relation(fields: [transferToBankId], references: [id])
+}
+
+model ChequeDetail {
+  id                    Int           @id @default(autoincrement())
+  giveId                Int
+  give                  Give          @relation(fields: [giveId], references: [id])
+  chequeBankId          Int
+  chequeBank            Bank          @relation(fields: [chequeBankId], references: [id])
+  chequeBankBranch      String
+  chequeNo              String
+  chequeDate            DateTime
+}
+
+model Purpose {
+  id      Int       @id @default(autoincrement())
+  name    String
+}
+
+model Receipt {
+  id              Int         @id @default(autoincrement())
+  giveId          Int         
+  give            Give        @relation(fields: [giveId], references: [id])
+  supporterId     Int
+  supporter       Supporter   @relation(fields: [supporterId], references: [id])
+  amount          Float
+  purposeId       Int
+  purposeId       Purpose     @relation(fields: [purposeId], references: [id])
+  expressNo       String?
+}
+
+model Report {
+  id              Int         @id @default(autoincrement())
+}
+
+model Department {
+  id    Int     @id @default(autoincrement())
+  name  String
 }
