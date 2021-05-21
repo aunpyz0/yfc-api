@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 async function main() {
     // ------ bank ------
-    const scb = await prisma.bank.create({ 
+    await prisma.bank.create({ 
         data: {
             id: 1,
             name: 'SCB',
@@ -38,7 +38,7 @@ async function main() {
     })
     await prisma.bank.create({ 
         data: {
-            id: 5,
+            id: 6,
             name: 'GBP',
         },
     })
