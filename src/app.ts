@@ -19,9 +19,8 @@ import yfcBankRouter from './handler/yfcbank'
 
 dotenv.config()
 
-const PORT = process.env.PORT || 8080
+export const PORT = process.env.PORT || 8080
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
-console.log('CORS_ORIGIN', CORS_ORIGIN)
 
 const app: Application = express()
 const prisma = new PrismaClient()
@@ -33,8 +32,8 @@ app.use(cors({
 app.use(urlencoded({ extended: true }))
 app.use(json())
 
-app.get('/', (req, res) => res.send('ok'))
 app.use('/evidence', express.static('uploads'))
+
 app.use(loginRouter(prisma))
 app.use(refreshRouter(prisma))
 app.use(logoutRouter(prisma))
@@ -53,4 +52,4 @@ app.use((err: Error, req: Request , res: Response, next: NextFunction) => {
     res.status(500).send(err.message)
 })
 
-app.listen(PORT, () => console.log(`server started at port ${PORT}`))
+export default app
