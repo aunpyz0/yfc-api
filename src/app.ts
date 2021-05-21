@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction, Router } from 'express'
+import express, { Application, Request, Response, NextFunction } from 'express'
 import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -7,11 +7,8 @@ import helmet from 'helmet'
 import roleRouter from './handler/role'
 import staffRouter from './handler/staff'
 import supporterRouter from './handler/supporter'
-import departmentRouter from './handler/department'
-import giveTypeRouter from './handler/giveType'
 import bankRouter from './handler/bank'
 import giveRouter from './handler/give'
-import paymentTypeRouter from './handler/paymentType'
 import loginRouter from './handler/login'
 import logoutRouter from './handler/logout'
 import refreshRouter from './handler/refresh'
@@ -40,10 +37,7 @@ app.use(logoutRouter(prisma))
 app.use(roleRouter(prisma))
 app.use(staffRouter(prisma))
 app.use(supporterRouter(prisma))
-app.use(departmentRouter(prisma))
-app.use(giveTypeRouter(prisma))
 app.use(bankRouter(prisma))
-app.use(paymentTypeRouter(prisma))
 app.use(giveRouter(prisma))
 app.use(yfcBankRouter(prisma))
 

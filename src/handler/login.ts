@@ -30,7 +30,7 @@ export default function(prisma: PrismaClient): Router {
 
                 await prisma.staff.update({
                     data: {
-                        token: refreshToken,
+                        refreshToken,
                     },
                     where: {
                         id: staff.id

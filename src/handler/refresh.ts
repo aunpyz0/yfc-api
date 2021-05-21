@@ -14,7 +14,7 @@ export default function (prisma: PrismaClient): Router {
 
             const staff = await prisma.staff.findFirst({
                 where: {
-                    token: tokenStr,
+                    refreshToken: tokenStr,
                 }
             })
 

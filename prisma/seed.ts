@@ -5,51 +5,40 @@ const cost = 12
 const prisma = new PrismaClient()
 
 async function main() {
-    // ------ paymentType ------
-    await prisma.paymentType.create({ 
-        data: {
-            name: 'โอน',
-        }
-    })
-    await prisma.paymentType.create({ 
-        data: {
-            name: 'เงินสด',
-        }
-    })
-    await prisma.paymentType.create({ 
-        data: {
-            name: 'เช็ค',
-        }
-    })
-
     // ------ bank ------
     const scb = await prisma.bank.create({ 
         data: {
+            id: 1,
             name: 'SCB',
         },
     })
     await prisma.bank.create({ 
         data: {
+            id: 2,
             name: 'KTB',
         },
     })
     await prisma.bank.create({ 
         data: {
+            id: 3,
             name: 'KBTG',
         },
     })
     await prisma.bank.create({ 
         data: {
+            id: 4,
             name: 'BBL',
         },
     })
     await prisma.bank.create({ 
         data: {
+            id: 5,
             name: 'TMB',
         },
     })
     await prisma.bank.create({ 
         data: {
+            id: 5,
             name: 'GBP',
         },
     })
@@ -57,54 +46,30 @@ async function main() {
     // ------ yfc bank ------
     await prisma.yFCBank.create({ 
         data: {
+            id: 1,
             name: 'YFC SCB',
-            accountNumber: '123-4-12313',
-            bankBranch: 'Bangkok',
-            bankId: scb.id
+            accountNo: '123-4-12313',
         },
     })
 
     await prisma.yFCBank.create({ 
         data: {
+            id: 2,
             name: 'YFC SCB 2',
-            accountNumber: '542-3-13414',
-            bankBranch: 'Chiang Mai',
-            bankId: scb.id
+            accountNo: '542-3-13414',
         },
-    })
-
-    // ------ giveType ------
-    await prisma.giveType.create({
-        data: {
-            name: 'ถวายรายเดือน'
-        }
-    })
-    await prisma.giveType.create({
-        data: {
-            name: 'ของขวัญ'
-        }
-    })
-
-    // ------ department ------
-    await prisma.department.create({
-        data: {
-            name: 'BKK'
-        }
-    })
-    await prisma.department.create({
-        data: {
-            name: 'CNX'
-        }
     })
 
     // ------ role ------
     await prisma.role.create({
         data: {
+            id: 1,
             name: 'STAFF'
         }
     })
     await prisma.role.create({
         data: {
+            id: 2,
             name: 'ACCOUNTANT'
         }
     })
@@ -113,8 +78,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "STAFF001",
-            firstname: "ภีระวัฒน์",
-            lastname: "พุ่มบัว",
+            firstname: "นายหนึ่ง",
+            lastname: "ในซอย",
             email: "staff1@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 1
@@ -123,8 +88,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "STAFF002",
-            firstname: "ผู้รับใช้",
-            lastname: "สัตย์ชื่อ",
+            firstname: "นายสอง",
+            lastname: "คองแคง",
             email: "staff2@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 1
@@ -133,8 +98,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "ACCT001",
-            firstname: "ใจงาม",
-            lastname: "จริงจริง",
+            firstname: "นายสาม",
+            lastname: "หาว",
             email: "acct1@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 2
@@ -143,8 +108,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "ACCT002",
-            firstname: "พนักงานบัญชี",
-            lastname: "ตัวจริง",
+            firstname: "นายสี่",
+            lastname: "ปีลิง",
             email: "acct2@test.com",
             password: bcrypt.hashSync("password", cost),
             roleId: 2
