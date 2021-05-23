@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "tsc": "tsc -w",
-    "dev": "nodemon dist/src/app.js",
+    "dev": "nodemon dist/src/server.js",
     "build": "tsc",
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
