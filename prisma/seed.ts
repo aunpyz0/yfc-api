@@ -64,8 +64,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "STAFF001",
-            firstname: "นายหนึ่ง",
-            lastname: "ในซอย",
+            firstname: "สตาฟหนึ่ง",
+            lastname: "สตาฟหนึ่ง",
             email: "staff1@test.com",
             password: bcrypt.hashSync("password", cost),
             role: Role.STAFF,
@@ -74,8 +74,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "STAFF002",
-            firstname: "นายสอง",
-            lastname: "คองแคง",
+            firstname: "สตาฟสอง",
+            lastname: "สตาฟสอง",
             email: "staff2@test.com",
             password: bcrypt.hashSync("password", cost),
             role: Role.STAFF,
@@ -84,8 +84,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "ACCT001",
-            firstname: "นายสาม",
-            lastname: "หาว",
+            firstname: "บัญชีหนึ่ง",
+            lastname: "บัญชีหนึ่ง",
             email: "acct1@test.com",
             password: bcrypt.hashSync("password", cost),
             role: Role.ACCOUNTANT,
@@ -94,8 +94,8 @@ async function main() {
     await prisma.staff.create({
         data: {
             code: "ACCT002",
-            firstname: "นายสี่",
-            lastname: "ปีลิง",
+            firstname: "บัญชีสอง",
+            lastname: "บัญชีสอง",
             email: "acct2@test.com",
             password: bcrypt.hashSync("password", cost),
             role: Role.ACCOUNTANT,
@@ -106,22 +106,22 @@ async function main() {
     await prisma.supporter.create({
         data: {
             code: "SUP001",
-            firstname: "รวยสุด",
-            lastname: "ในตำบล",
+            firstname: "ผู้ถวายหนึ่ง",
+            lastname: "ผู้ถวายหนึ่ง",
         }
     })
     await prisma.supporter.create({
         data: {
             code: "SUP002",
-            firstname: "โถ",
-            lastname: "ทองคำ",
+            firstname: "ผู้ถวายสอง",
+            lastname: "ผู้ถวายสอง",
         }
     })
     await prisma.supporter.create({
         data: {
             code: "SUP003",
-            firstname: "ชอบถวาย",
-            lastname: "รายเดือน",
+            firstname: "ผู้ถวายสาม",
+            lastname: "ผู้ถวายสาม",
         }
     })
 }

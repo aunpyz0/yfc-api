@@ -12,6 +12,7 @@ import loginRouter from './handler/login'
 import logoutRouter from './handler/logout'
 import refreshRouter from './handler/refresh'
 import yfcBankRouter from './handler/yfcbank'
+import roleRouter from './handler/role'
 
 dotenv.config()
 
@@ -38,6 +39,7 @@ app.use(supporterRouter(prisma))
 app.use(bankRouter(prisma))
 app.use(giveRouter(prisma))
 app.use(yfcBankRouter(prisma))
+app.use(roleRouter(prisma))
 
 app.use((err: Error, req: Request , res: Response, next: NextFunction) => {
     console.error(err)
