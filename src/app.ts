@@ -4,7 +4,6 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import { json, urlencoded } from 'body-parser'
 import helmet from 'helmet'
-import roleRouter from './handler/role'
 import staffRouter from './handler/staff'
 import supporterRouter from './handler/supporter'
 import bankRouter from './handler/bank'
@@ -34,7 +33,6 @@ app.use('/evidence', express.static('uploads'))
 app.use(loginRouter(prisma))
 app.use(refreshRouter(prisma))
 app.use(logoutRouter(prisma))
-app.use(roleRouter(prisma))
 app.use(staffRouter(prisma))
 app.use(supporterRouter(prisma))
 app.use(bankRouter(prisma))

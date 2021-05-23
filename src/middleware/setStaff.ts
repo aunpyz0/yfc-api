@@ -20,12 +20,8 @@ export default function(prisma: PrismaClient) {
             const staff = await prisma.staff.findUnique({
                 where: {
                     id: data.id,
-                },
-                include: {
-                    role: true,
                 }
             })
-
             req.user = staff!
             next()
 

@@ -17,16 +17,14 @@ model Staff {
   lastname        String
   email           String    @unique
   password        String
-  role            Role      @relation(fields: [roleId], references: [id])
-  roleId          Int
+  role            Role      @default(STAFF)
   refreshToken    String?
   giveReceives    Give[]
 }
 
-model Role {
-  id        Int         @id @default(autoincrement())
-  name      String
-  staffs    Staff[]
+enum Role {
+  STAFF
+  ACCOUNTANT
 }
 
 model Give {
@@ -45,7 +43,7 @@ model Give {
 
 model TransferDetail {
   id                    Int           @id @default(autoincrement())
-  giveId                Int
+  giveId                Int           @unique
   give                  Give          @relation(fields: [giveId], references: [id])
   transferDate          DateTime
   transferFromBankId    Int
@@ -70,7 +68,7 @@ model YFCBank {
 
 model ChequeDetail {
   id                    Int           @id @default(autoincrement())
-  giveId                Int
+  giveId                Int           @unique
   give                  Give          @relation(fields: [giveId], references: [id])
   chequeBankId          Int
   chequeBank            Bank          @relation(fields: [chequeBankId], references: [id])

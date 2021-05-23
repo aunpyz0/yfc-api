@@ -13,9 +13,6 @@ export default function(prisma: PrismaClient): Router {
                 where: {
                     email: email,   
                 },
-                include: {
-                    role: true,
-                }
             })
             if (staff) {
                 const valid = await bcrypt.compare(password, staff.password)
@@ -42,7 +39,7 @@ export default function(prisma: PrismaClient): Router {
                     lastname: staff.lastname,
                     refreshToken: refreshToken,
                     accessToken: accessToken,
-                    role: staff.role.name,
+                    role: staff.role,
                 })
             } else {
                 return res.status(401).json({
