@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Role } from '@prisma/client'
 import bcrypt from 'bcrypt'
 
 const cost = 12
@@ -60,20 +60,6 @@ async function main() {
         },
     })
 
-    // ------ role ------
-    await prisma.role.create({
-        data: {
-            id: 1,
-            name: 'STAFF'
-        }
-    })
-    await prisma.role.create({
-        data: {
-            id: 2,
-            name: 'ACCOUNTANT'
-        }
-    })
-
     // ------ staff ------
     await prisma.staff.create({
         data: {
@@ -82,7 +68,7 @@ async function main() {
             lastname: "ในซอย",
             email: "staff1@test.com",
             password: bcrypt.hashSync("password", cost),
-            roleId: 1
+            role: Role.STAFF,
         }
     })
     await prisma.staff.create({
@@ -92,7 +78,7 @@ async function main() {
             lastname: "คองแคง",
             email: "staff2@test.com",
             password: bcrypt.hashSync("password", cost),
-            roleId: 1
+            role: Role.STAFF,
         }
     })
     await prisma.staff.create({
@@ -102,7 +88,7 @@ async function main() {
             lastname: "หาว",
             email: "acct1@test.com",
             password: bcrypt.hashSync("password", cost),
-            roleId: 2
+            role: Role.ACCOUNTANT,
         }
     })
     await prisma.staff.create({
@@ -112,7 +98,7 @@ async function main() {
             lastname: "ปีลิง",
             email: "acct2@test.com",
             password: bcrypt.hashSync("password", cost),
-            roleId: 2
+            role: Role.ACCOUNTANT,
         }
     })
 
