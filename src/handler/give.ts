@@ -6,7 +6,6 @@ import path from 'path'
 import requireStaff from '../middleware/requireStaff'
 import setStaff from '../middleware/setStaff'
 import { TRANSFER, CHEQUE } from '../constant/paymentType'
-import { tr } from 'date-fns/locale'
 
 export default function(prisma: PrismaClient) {
 
@@ -30,39 +29,23 @@ export default function(prisma: PrismaClient) {
         // Validation
         // Error handling
 
-        const staff = req.user!
         const data = req.body
         
         try {
-            let giveData = {
-                supporterId: data.supporterId,
-                receiverId: staff.id,
-                amount: data.amount,
-                evidence: req.file && req.file.filename,
-            }
+            let giveData = parseGive(req)
             const give = await prisma.give.create({ data: giveData })
-
-            if (data.paymentType === TRANSFER) {
-                const transferDetail = {
-                    giveId: give.id,
-                    transferDate: data.transferDate,
-                    transferFromBankId: data.transferFromBankId,
-                    transferToBankId: data.transferToBankId,
-                }
-                await prisma.transferDetail.create({ data: transferDetail })
-            }
-
-            else if (data.paymentType === CHEQUE) {
-                const chequeDetail = {
-                    giveId: give.id,
-                    chequeBankId: data.chequeBankId,
-                    chequeBankBranch: data.chequeBankBranch,
-                    chequeNo: data.chequeNo,
-                    chequeDate: data.chequeDate
-                }
-                await prisma.chequeDetail.create({ data: chequeDetail })
-            }
-            else {
+            
+            if (data.transferDetail) {
+                const transferDetail = parseTransferDetail(data.transferDetail)
+                await prisma.transferDetail.create({ 
+                    data: { ...transferDetail, giveId: give.id }
+                })
+            } else if (data.chequeDetail) {
+                const chequeDetail = parseChequeDetail(data.chequeDetail)
+                await prisma.chequeDetail.create({ 
+                    data: { ...chequeDetail, giveId: give.id } 
+                })
+            } else {
                 return res.status(400).send({
                     message: 'Payment type is invalid'
                 })
@@ -199,7 +182,13 @@ export default function(prisma: PrismaClient) {
             let option: Prisma.GiveFindManyArgs = {
                 include: {
                     supporter: true,
-                    receiver: true,
+                    receiver: {
+                        select: {
+                            id: true,
+                            firstname: true,
+                            lastname: true,
+                        }
+                    },
                     transferDetail: true,
                     chequeDetail: true,
                 }
@@ -224,7 +213,13 @@ export default function(prisma: PrismaClient) {
                 where: { id },
                 include: {
                     supporter: true,
-                    receiver: true,
+                    receiver: {
+                        select: {
+                            id: true,
+                            firstname: true,
+                            lastname: true,
+                        }
+                    },
                     transferDetail: true,
                     chequeDetail: true,
                 }
@@ -234,6 +229,39 @@ export default function(prisma: PrismaClient) {
             next(e)
         }
     })
+
+    function parseGive(req: Request) {
+        console.log(req.body)
+        const data = req.body
+        const staff = req.user!
+        let giveData: any = {
+            supporterId: Number(data.supporterId),
+            receiverId: staff.role === Role.ACCOUNTANT ? parseInt(data.receiverId, 10) : staff.id,
+            amount: Number(data.amount),
+            evidence: req.file && req.file.filename,
+        }
+
+        return giveData
+    }
+
+    function parseTransferDetail(data: any) {
+        const transferDetail = {
+            transferDate: data.transferDate,
+            transferFromBankId: Number(data.transferFromBankId),
+            transferToBankId: Number(data.transferToBankId),
+        }
+        return transferDetail
+    }
+
+    function parseChequeDetail(data: any) {
+        const chequeDetail = {
+            chequeBankId: Number(data.chequeBankId),
+            chequeBankBranch: data.chequeBankBranch,
+            chequeNo: data.chequeNo,
+            chequeDate: data.chequeDate
+        }
+        return chequeDetail
+    }
 
     return router
 }
