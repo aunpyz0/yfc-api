@@ -12,7 +12,6 @@
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
     "reset": "prisma migrate reset --preview-feature --force",
-    "seed": "prisma db seed --preview-feature",
     "test": "mocha -r ts-node/register test/**/*.test.ts --reporter nyan"
   },
   "devDependencies": {
@@ -43,5 +42,8 @@
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
