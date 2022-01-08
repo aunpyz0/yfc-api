@@ -1,19 +1,18 @@
 import express, { Application, Request, Response, NextFunction } from 'express'
-import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { json, urlencoded } from 'express'
 import helmet from 'helmet'
-import statusRouter from './handler/status'
-import staffRouter from './handler/staff'
 import supporterRouter from './handler/supporter'
-import bankRouter from './handler/bank'
-import giveRouter from './handler/give'
-import loginRouter from './handler/login'
-import logoutRouter from './handler/logout'
-import refreshRouter from './handler/refresh'
-import yfcBankRouter from './handler/yfcbank'
-import roleRouter from './handler/role'
+// import statusRouter from './handler/status'
+// import staffRouter from './handler/staff'
+// import bankRouter from './handler/bank'
+// import giveRouter from './handler/give'
+// import loginRouter from './handler/login'
+// import logoutRouter from './handler/logout'
+// import refreshRouter from './handler/refresh'
+// import yfcBankRouter from './handler/yfcbank'
+// import roleRouter from './handler/role'
 
 dotenv.config()
 
@@ -31,16 +30,16 @@ app.use(json())
 
 app.use('/evidence', express.static('uploads'))
 
-app.use(statusRouter())
-app.use(loginRouter())
-app.use(refreshRouter())
-app.use(logoutRouter())
-app.use(staffRouter())
+// app.use(statusRouter())
+// app.use(loginRouter())
+// app.use(refreshRouter())
+// app.use(logoutRouter())
+// app.use(staffRouter())
 app.use(supporterRouter())
-app.use(bankRouter())
-app.use(giveRouter())
-app.use(yfcBankRouter())
-app.use(roleRouter())
+// app.use(bankRouter())
+// app.use(giveRouter())
+// app.use(yfcBankRouter())
+// app.use(roleRouter())
 
 app.use((err: Error, req: Request , res: Response, next: NextFunction) => {
     console.error(err)

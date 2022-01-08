@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev src/server.js",
+    "dev": "ts-node-dev src/server.ts",
     "build": "tsc",
     "migrate": "prisma migrate dev --preview-feature",
     "generate": "prisma generate",
@@ -38,6 +38,7 @@
     "cors": "^2.8.5",
     "date-fns": "^2.19.0",
     "dotenv": "^8.2.0",
+    "exceljs": "^4.3.0",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
