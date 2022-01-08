@@ -36,9 +36,15 @@ model Give {
   receiveDate           DateTime      @default(now())
   amount                Float
   evidence              String?
+  paymentType           PaymentType   @default(TRANSFER)
   transferDetail        TransferDetail?
   chequeDetail          ChequeDetail?
   receipts              Receipt[]
+}
+
+enum PaymentType {
+  TRANSFER
+  CHEQUE
 }
 
 model TransferDetail {
