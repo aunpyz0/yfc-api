@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express'
 import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { json, urlencoded } from 'body-parser'
+import { json, urlencoded } from 'express'
 import helmet from 'helmet'
 import statusRouter from './handler/status'
 import staffRouter from './handler/staff'
@@ -21,7 +21,6 @@ export const PORT = process.env.PORT || 8080
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
 
 const app: Application = express()
-const prisma = new PrismaClient()
 
 app.use(helmet())
 app.use(cors({
@@ -32,16 +31,16 @@ app.use(json())
 
 app.use('/evidence', express.static('uploads'))
 
-app.use(statusRouter(prisma))
-app.use(loginRouter(prisma))
-app.use(refreshRouter(prisma))
-app.use(logoutRouter(prisma))
-app.use(staffRouter(prisma))
-app.use(supporterRouter(prisma))
-app.use(bankRouter(prisma))
-app.use(giveRouter(prisma))
-app.use(yfcBankRouter(prisma))
-app.use(roleRouter(prisma))
+app.use(statusRouter())
+app.use(loginRouter())
+app.use(refreshRouter())
+app.use(logoutRouter())
+app.use(staffRouter())
+app.use(supporterRouter())
+app.use(bankRouter())
+app.use(giveRouter())
+app.use(yfcBankRouter())
+app.use(roleRouter())
 
 app.use((err: Error, req: Request , res: Response, next: NextFunction) => {
     console.error(err)

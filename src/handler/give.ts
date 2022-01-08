@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Role } from '@prisma/client'
+import { Prisma, Role } from '@prisma/client'
 import fs from 'fs'
 import express, { NextFunction, Request, Response } from 'express'
 import multer from 'multer'
@@ -6,8 +6,9 @@ import path from 'path'
 import requireStaff from '../middleware/requireStaff'
 import setStaff from '../middleware/setStaff'
 import { TRANSFER, CHEQUE } from '../constant/paymentType'
+import prisma from '../prisma'
 
-export default function(prisma: PrismaClient) {
+export default function() {
 
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {

@@ -1,12 +1,12 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import bcrypt from 'bcrypt'
-import { PrismaClient } from '@prisma/client'
 import requireAccountant from '../middleware/requireAccountant'
 import setStaff from '../middleware/setStaff'
+import prisma from '../prisma'
 
 const saltRounds = 12
 
-export default function(prisma: PrismaClient): Router {
+export default function(): Router {
     const router = express.Router()
 
     router.use(setStaff(prisma))

@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client'
 import { Router, NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { generateAccessToken, generateRefreshToken } from '../token'
+import prisma from '../prisma'
 
-export default function(prisma: PrismaClient): Router {
+export default function(): Router {
     const router = Router()
 
     router.post('/login', async (req: Request, res: Response, next: NextFunction) => {

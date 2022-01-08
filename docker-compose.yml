@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  db:
+    image: "postgres:12"
+    ports:
+      - "54320:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=pongneng
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=yfc_db

@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client'
 import express, { NextFunction, Request, Response, Router } from 'express'
 import requireAccountant from '../middleware/requireAccountant'
 import requireStaff from '../middleware/requireStaff'
 import setStaff from '../middleware/setStaff'
+import prisma from '../prisma'
 
-export default function(prisma: PrismaClient): Router {
+export default function(): Router {
     const router = express.Router()
 
     router.use(setStaff(prisma))
