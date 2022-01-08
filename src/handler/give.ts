@@ -1,11 +1,10 @@
-import { Prisma, Role } from '@prisma/client'
+import { Prisma, Role, PaymentType } from '@prisma/client'
 import fs from 'fs'
 import express, { NextFunction, Request, Response } from 'express'
 import multer from 'multer'
 import path from 'path'
 import requireStaff from '../middleware/requireStaff'
 import setStaff from '../middleware/setStaff'
-import { TRANSFER, CHEQUE } from '../constant/paymentType'
 import prisma from '../prisma'
 
 export default function() {
@@ -94,7 +93,7 @@ export default function() {
                 data: giveData 
             })
 
-            if (data.paymentType === TRANSFER) {
+            if (data.paymentType === PaymentType.TRANSFER) {
                 await prisma.chequeDetail.delete({
                     where: { giveId: giveId },
                 })
@@ -116,7 +115,7 @@ export default function() {
                 })
             }
 
-            else if (data.paymentType === CHEQUE) {
+            else if (data.paymentType === PaymentType.CHEQUE) {
                 await prisma.transferDetail.delete({
                     where: { giveId: giveId },
                 })
